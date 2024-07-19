@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Badge, Select, Tag, Card, Table, Tabs } from 'antd';
-import type { TableColumnsType } from 'antd';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Divider, Tooltip } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 // Interfaces
@@ -16,9 +14,8 @@ import { PlayerCard } from '../../components/generals/PlayerCard';
 import PlayerStats from '../../components/generals/PlayerStats';
 // import BettingCard from '../../generals/BettingCard';
 import SideBar from '../../components/layouts/SideBar'; 
-import Loader from '../../components/gadgets/Loader';
 // API Calls
-import { fetchNFLTeams, fetchNFLTeamSchedule, fetchNFLPlayerList, fetchNFLBettingOdds, fetchNFLGamesForPlayer, fetchNFLPlayerInfo } from '../../services/NFLServices';
+import {  fetchNFLTeamSchedule,  fetchNFLBettingOdds, fetchNFLGamesForPlayer } from '../../services/NFLServices';
 // Utils
 import { filterGamesByFilterOptions } from '../../utils/AnalyseGameType';
 import AuthContext from '../../context/authContext';

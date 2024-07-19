@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Badge, Select, Tag, Card, Table, Tabs } from 'antd';
-import type { TableColumnsType } from 'antd';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Divider, Tooltip } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 // Interfaces
@@ -16,9 +14,8 @@ import { PlayerCard } from '../../components/generals/PlayerCard';
 import PlayerStats from '../../components/generals/PlayerStats';
 // import BettingCard from '../../generals/BettingCard';
 import SideBar from '../../components/layouts/SideBar';
-import Loader from '../../components/gadgets/Loader';
 // API Calls
-import { fetchNBATeams, fetchNBATeamSchedule, fetchNBAPlayerList, fetchNBABettingOdds, fetchNBAGamesForPlayer, fetchNBAPlayerInfo } from '../../services/NBAServices';
+import { fetchNBATeamSchedule, fetchNBABettingOdds, fetchNBAGamesForPlayer, fetchNBAPlayerInfo } from '../../services/NBAServices';
 // Utils
 import { filterGamesByFilterOptions } from '../../utils/AnalyseGameType';
 import { teamOddColumns2 } from '../../utils/tableColumn';
@@ -43,13 +40,12 @@ const NBA: React.FC = () => {
   const [selectedPlayer, setSelectedPlayer] = useState<PlayerInterface | null>(null);
   const [selectedPlayerInfo, setSelectedPlayerInfo] = useState<PlayerInterface | null>(null);
   const [schedule, setSchedule] = useState<MatchInterface[]>([]);
-  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);  // filterOptions
+  const [selectedTags, setSelectedTags] = React.useState<string[]>([]);  
   const [upComingMatch, setUpComingMatch] = useState<any | null>(null);
   const [selectedMatch, setSelectedMatch] = useState<any | null>(null);
   const [playerGameStats, setPlayerGameStats] = useState<any>(null);
   const [filteredPlayerGameStats, setFilteredPlayerGameStats] = useState<any>(null);
   const [teamOddData, setTeamOddData] = useState<TeamOddInterface[]>([]);
-  // const [playerOddData, setPlayerOddData] = useState<PlayerOddData[]>([]);
   const [loadingTeamsData, setLoadingTeamsData] = useState(true);
   const [loadingPlayers, setLoadingPlayers] = useState(true);
   const [loadingTeamSchedule, setLoadingTeamSchedule] = useState(true);

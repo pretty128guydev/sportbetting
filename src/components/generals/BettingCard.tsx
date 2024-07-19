@@ -19,7 +19,7 @@ const BettingCard: React.FC<any> = ({ teamOddData }) => {
 
   const handleItemClick = (item: any) => {
     setSelectedItem(item);
-    setExpanded(false); // Close dropdown after selecting an item
+    setExpanded(false); 
   };
 
   const menu = (

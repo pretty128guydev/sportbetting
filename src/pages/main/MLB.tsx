@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Row, Col, Badge, Select, Tag, Card, Table, Tabs, Space } from 'antd';
-import type { TableColumnsType } from 'antd';
-import { AntDesignOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Divider, Tooltip } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 // Interfaces
@@ -18,7 +16,7 @@ import BettingCard from '../../components/generals/BettingCard';
 import SideBar from '../../components/layouts/SideBar';
 import Loader from '../../components/gadgets/Loader';
 // API Calls
-import { fetchMLBTeams, fetchMLBTeamSchedule, fetchMLBPlayerList, fetchMLBBettingOdds, fetchMLBGamesForPlayer, fetchMLBPlayerInfo } from '../../services/MLBServices';
+import { fetchMLBTeamSchedule, fetchMLBBettingOdds, fetchMLBGamesForPlayer, fetchMLBPlayerInfo } from '../../services/MLBServices';
 // Utils
 import { filterGamesByFilterOptions } from '../../utils/AnalyseGameType';
 import { teamOddColumns1, playerOddColumns } from '../../utils/tableColumn';

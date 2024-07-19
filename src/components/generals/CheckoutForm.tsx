@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { useStripe, useElements, CardElement, CardElementProps } from '@stripe/react-stripe-js';
+import React, { useContext } from 'react';
+import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import AuthContext from '../../context/authContext';
 import { toast, ToastContainer } from 'react-toastify';
@@ -104,7 +104,7 @@ const styles = {
     transition: 'background-color 0.3s',
   },
   disabledButton: {
-    backgroundColor: '#b3b3b3', // Adjust the color for disabled state
+    backgroundColor: '#b3b3b3', 
     cursor: 'not-allowed',
   },
   error: {

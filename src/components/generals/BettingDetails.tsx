@@ -3,7 +3,7 @@ import React from 'react';
 
 interface BettingDetailsProps {
   teamOddData: any[];
-  onItemClick: (item: any) => void; // Define prop for handling item click
+  onItemClick: (item: any) => void; 
 }
 
 const BettingDetails: React.FC<BettingDetailsProps> = ({ teamOddData, onItemClick }) => {
@@ -21,7 +21,7 @@ const BettingDetails: React.FC<BettingDetailsProps> = ({ teamOddData, onItemClic
             alignItems: 'center',
             justifyContent: 'space-between',
           }}
-          onClick={() => onItemClick(item)} // Call onItemClick on click
+          onClick={() => onItemClick(item)} 
         >
           <div style={{ display: 'flex', flexDirection: 'column', marginRight: '10px' }}>
             <span>{item.betName}</span>

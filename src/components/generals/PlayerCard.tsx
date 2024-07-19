@@ -1,8 +1,7 @@
 import React from 'react';
-import { Card, Avatar, Typography, Row, Col, Badge } from 'antd';
+import { Card, Avatar, Typography, Row, Col } from 'antd';
 import { HomeTwoTone, SkinTwoTone, RocketTwoTone, CompassTwoTone, CalendarTwoTone, CrownTwoTone } from '@ant-design/icons';
 // Component
-import ErrorComponent from '../gadgets/Error';
 import Loader from '../gadgets/Loader';
 // Interfaces
 import { PlayerInterface } from '../interfaces/Interfaces';

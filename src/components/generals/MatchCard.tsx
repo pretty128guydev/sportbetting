@@ -2,7 +2,6 @@ import React from 'react';
 import { Card, Row, Col, Avatar } from 'antd';
 import { TeamOutlined } from '@ant-design/icons';
 // Component
-import ErrorComponent from '../gadgets/Error';
 import Loader from '../gadgets/Loader';
 // Interface
 import { MatchInterface } from '../interfaces/Interfaces';

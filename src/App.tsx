@@ -9,13 +9,11 @@ import MLB from './pages/main/MLB';
 import NFL from './pages/main/NFL';
 import NHL from './pages/main/NHL';
 import NBA from './pages/main/NBA';
-import PaymentComponent from './components/generals/PaymentComponent';
 
 function App() {
   return (    
     <BrowserRouter basename="/">
       <Routes>
-        {/* <Route path="/" element={<PaymentComponent />} /> */}
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route element={<AuthRoute />}>

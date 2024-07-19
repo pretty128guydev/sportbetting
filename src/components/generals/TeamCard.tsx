@@ -6,7 +6,6 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 // Components
 import { TeamStatsLine, TeamStatsPie } from "./TeamStats";
 import ErrorComponent from "../gadgets/Error";
-import Loader from "../gadgets/Loader";
 // Interface
 import { TeamInterface } from "../interfaces/Interfaces";
 ChartJS.register(ArcElement, Tooltip, Legend);

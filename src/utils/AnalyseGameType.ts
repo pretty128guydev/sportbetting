@@ -25,12 +25,12 @@ const filterHomeAway = (games: any, filterKey: string, resultType: string): stri
   return filteredKeys;
 }
 
-// Placeholder for filtering games by B2B or H2H (to be implemented based on specific logic)
-const filterH2HB2B = (games: any, resultType: string): string[] => {
-  const filteredKeys: string[] = [];
-  // Implement your logic here to filter games by B2B or H2H
-  return filteredKeys;
-}
+// // Placeholder for filtering games by B2B or H2H (to be implemented based on specific logic)
+// const filterH2HB2B = (games: any, resultType: string): string[] => {
+//   const filteredKeys: string[] = [];
+//   // Implement your logic here to filter games by B2B or H2H
+//   return filteredKeys;
+// }
 
 export const filterGamesByFilterOptions = (games: any, filterOptions: string[], teamAbv: string, matches: any[]): any => {
   if(filterOptions.length === 0) return games;

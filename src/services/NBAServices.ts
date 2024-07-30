@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = process.env.REACT_APP_NBA_API_KEY || '5e22851e9bmsh13a293d89eb2cc6p1e551ejsn81c28c0390cf';
+const API_KEY = process.env.REACT_APP_NBA_API_KEY;
 const API_HOST = 'tank01-fantasy-stats.p.rapidapi.com';
 const API_URL_GetNBATeams = 'https://tank01-fantasy-stats.p.rapidapi.com/getNBATeams?schedules=false&rosters=false&topPerformers=true&teamStats=true&statsToGet=averages';
 const API_URL_GetNBAPlayerList = 'https://tank01-fantasy-stats.p.rapidapi.com/getNBAPlayerList';

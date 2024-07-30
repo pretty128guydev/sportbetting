@@ -7,7 +7,7 @@ const API_URL_BettingOdds = 'https://tank01-mlb-live-in-game-real-time-statistic
 const API_URL_PlayerHistory = 'https://tank01-mlb-live-in-game-real-time-statistics.p.rapidapi.com/getMLBGamesForPlayer';
 const API_URL_PlayerInfo = 'https://tank01-mlb-live-in-game-real-time-statistics.p.rapidapi.com/getMLBPlayerInfo';
 const API_HOST = 'tank01-mlb-live-in-game-real-time-statistics.p.rapidapi.com';
-const API_KEY = process.env.REACT_APP_MLB_API_KEY || "5e22851e9bmsh13a293d89eb2cc6p1e551ejsn81c28c0390cf";
+const API_KEY = process.env.REACT_APP_MLB_API_KEY;
 
 const createAPIRequest = async (url:string, params = {}) => {
   try {

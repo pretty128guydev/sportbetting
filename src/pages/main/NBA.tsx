@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Badge, Select, Tag, Card, Table, Tabs } from 'antd';
+import { Row, Col, Badge, Select, Tag, Card, Table } from 'antd';
 import { Avatar, Divider, Tooltip } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 // Interfaces
@@ -12,6 +12,7 @@ import { NBATeamCard } from '../../components/generals/TeamCard';
 import MatchCard from '../../components/generals/MatchCard';
 import { PlayerCard } from '../../components/generals/PlayerCard';
 import PlayerStats from '../../components/generals/PlayerStats';
+import Loader from '../../components/gadgets/Loader';
 // import BettingCard from '../../generals/BettingCard';
 import SideBar from '../../components/layouts/SideBar';
 // API Calls
@@ -24,7 +25,6 @@ import { NBATeams, NBAPlayers } from '../../mockup/NBAData';
 import AuthContext from '../../context/authContext';
 // Chart.js Error Fix
 import { Chart, registerables } from 'chart.js';
-import { get } from 'http';
 Chart.register(...registerables);
 
 const tagsData = ['Home', 'Away', 'H2H', 'B2B', 'Regular Season', 'Playoffs'];
@@ -415,6 +415,7 @@ const NBA: React.FC = () => {
       {isExpired ? (
         <PaymentComponent matchType="NBA" />
       ) : (
+        loadingPlayers && loadingTeamSchedule && loadingTeamsData ? <Loader /> :  
         <>
           <div style={{ padding: '10px', marginTop: '10px' }}>
             <TeamsCarousel teams={teams} onSelect={handleTeamSelect} />

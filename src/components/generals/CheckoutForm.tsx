@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import AuthContext from '../../context/authContext';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 interface CheckoutFormProps {
   matchType: string;
@@ -49,7 +49,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ matchType }) => {
   // Function to handle the payment and get the token.id
   const handlePayment = async (tokenId: string) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/payment', {
+      const response = await axios.post(`${process.env.REACT_APP_API_URL}/payment`, {
         token: tokenId,
         matchType: matchType,
         authUser: user

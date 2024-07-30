@@ -25,7 +25,6 @@ import AuthContext from '../../context/authContext';
 import { MLBTeams, MLBPlayers } from '../../mockup/MLBData';
 // Chart.js Error Fix
 import { Chart, registerables } from 'chart.js';
-import { get } from 'http';
 Chart.register(...registerables);
 
 const { TabPane } = Tabs;
@@ -125,6 +124,7 @@ const MLB: React.FC = () => {
   }
   
   const getMatchData = async () => {
+    if(loadingPlayers || loadingTeamsData) return;
     let tmp_matches: MatchInterface[] = [];
     if(!selectedTeam)
       return tmp_matches;
@@ -188,6 +188,7 @@ const MLB: React.FC = () => {
     if(!selectedPlayer) return;
     try {
       const MLBGamesForPlayer = await fetchMLBGamesForPlayer(selectedPlayer?.id, currentYear.toString());
+      console.log('MLBGamesForPlayer => ', MLBGamesForPlayer);
       if (MLBGamesForPlayer.statusCode === 200) {
         setPlayerGameStats(MLBGamesForPlayer.body);
         console.log('playerGameStats => ', playerGameStats);
@@ -430,6 +431,7 @@ const MLB: React.FC = () => {
       {isExpired ? (
         <PaymentComponent matchType="MLB" />
       ) : (
+        loadingPlayers && loadingTeamSchedule && loadingTeamsData ? <Loader /> :   
         <>
           <div style={{ padding: '10px', marginTop: '10px' }}>
             <TeamsCarousel teams={teams} onSelect={handleTeamSelect} />

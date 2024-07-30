@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = process.env.REACT_APP_NFL_API_KEY || '5e22851e9bmsh13a293d89eb2cc6p1e551ejsn81c28c0390cf';
+const API_KEY = process.env.REACT_APP_NFL_API_KEY;
 const API_HOST = 'tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com';
 const API_URL_GetNFLTeams = 'https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLTeams?rosters=false&schedules=false&topPerformers=false&teamStats=true&teamStatsSeason=2023';
 const API_URL_GetNFLPlayerList = 'https://tank01-nfl-live-in-game-real-time-statistics-nfl.p.rapidapi.com/getNFLPlayerList';

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = process.env.REACT_APP_NHL_API_KEY || '5e22851e9bmsh13a293d89eb2cc6p1e551ejsn81c28c0390cf';
+const API_KEY = process.env.REACT_APP_NHL_API_KEY;
 const API_HOST = 'tank01-nhl-live-in-game-real-time-statistics-nhl.p.rapidapi.com';
 const API_URL_GetNHLTeams = 'https://tank01-nhl-live-in-game-real-time-statistics-nhl.p.rapidapi.com/getNHLTeams?teamStats=true&topPerformers=true&includeDefunctTeams=false';
 const API_URL_GetNHLPlayerList = 'https://tank01-nhl-live-in-game-real-time-statistics-nhl.p.rapidapi.com/getNHLPlayerList';

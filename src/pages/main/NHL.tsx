@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Row, Col, Badge, Select, Tag, Card, Table, Tabs } from 'antd';
+import { Row, Col, Badge, Select, Tag, Card, Table } from 'antd';
 import { Avatar, Divider, Tooltip } from 'antd';
 import { ToastContainer, toast } from 'react-toastify';
 // Interfaces
@@ -12,6 +12,7 @@ import { NHLTeamCard } from '../../components/generals/TeamCard';
 import MatchCard from '../../components/generals/MatchCard';
 import { PlayerCard } from '../../components/generals/PlayerCard';
 import PlayerStats from '../../components/generals/PlayerStats';
+import Loader from '../../components/gadgets/Loader';
 // import BettingCard from '../../generals/BettingCard';
 import SideBar from '../../components/layouts/SideBar';
 // API Calls
@@ -24,13 +25,12 @@ import { teamOddColumns3 } from '../../utils/tableColumn';
 import { NHLTeams, NHLPlayers } from '../../mockup/NHLData';
 // Chart.js Error Fix
 import { Chart, registerables } from 'chart.js';
-import { get } from 'http';
 Chart.register(...registerables);
 
 const tagsData = ['Home', 'Away', 'H2H', 'B2B', 'Regular Season', 'Playoffs'];
 
 const NHL: React.FC = () => {
-  const currentYear = new Date().getFullYear();
+  // const currentYear = new Date().getFullYear();
   const { user } = useContext(AuthContext);
   const [isExpired, setIsExpired] = useState(false);
   const [teams, setTeams] = useState<TeamInterface[]>([]);
@@ -387,132 +387,134 @@ const NHL: React.FC = () => {
     <>
       <Topbar />
       {
-        isExpired ? <PaymentComponent matchType="NHL" /> : 
-        <>
-          <div style={{ padding: '10px', marginTop: '10px' }}>
-            <TeamsCarousel teams={teams} onSelect={handleTeamSelect} />
-            <NHLTeamCard teamData={selectedTeam} />
-          </div>     
-          <div style={{ padding: '10px'}}>
-            <Row>
-              <Col span={4} style={{ paddingRight: '10px' }}>
-                <div style={{ backgroundColor: 'white', borderRadius: '5px'}}>
-                  <Badge.Ribbon text="Team Schedule">
-                    <div style={{ maxHeight: '150vh', overflowY: 'scroll' }}>
+        isExpired ? <PaymentComponent matchType="NHL" /> : (
+          loadingTeamsData && loadingPlayers && loadingTeamSchedule ? <Loader /> :
+          <>
+            <div style={{ padding: '10px', marginTop: '10px' }}>
+              <TeamsCarousel teams={teams} onSelect={handleTeamSelect} />
+              <NHLTeamCard teamData={selectedTeam} />
+            </div>     
+            <div style={{ padding: '10px'}}>
+              <Row>
+                <Col span={4} style={{ paddingRight: '10px' }}>
+                  <div style={{ backgroundColor: 'white', borderRadius: '5px'}}>
+                    <Badge.Ribbon text="Team Schedule">
+                      <div style={{ maxHeight: '150vh', overflowY: 'scroll' }}>
+                        {
+                          schedule.map((item: MatchInterface) => (
+                            <MatchCard key={item.id} matchData={item} />
+                          ))
+                        }
+                      </div>
+                    </Badge.Ribbon>
+                  </div>  
+                </Col>
+                <Col span={20}>
+                  <div style={{ padding: '10px' }}>
+                    <Divider>Team Players</Divider>
+                    <Avatar.Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                       {
-                        schedule.map((item: MatchInterface) => (
-                          <MatchCard key={item.id} matchData={item} />
+                        teamPlayers.map((player: PlayerInterface, index: number) => (
+                          <Tooltip title={player.name} placement="top">
+                            <Avatar key={index} size={50} style={{ backgroundColor: '#f56a00' }}>{player.name.split(' ')[0].charAt(0) + player.name.split(' ')[1].charAt(0)}</Avatar>
+                          </Tooltip>
                         ))
                       }
-                    </div>
-                  </Badge.Ribbon>
-                </div>  
-              </Col>
-              <Col span={20}>
-                <div style={{ padding: '10px' }}>
-                  <Divider>Team Players</Divider>
-                  <Avatar.Group style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    {
-                      teamPlayers.map((player: PlayerInterface, index: number) => (
-                        <Tooltip title={player.name} placement="top">
-                          <Avatar key={index} size={50} style={{ backgroundColor: '#f56a00' }}>{player.name.split(' ')[0].charAt(0) + player.name.split(' ')[1].charAt(0)}</Avatar>
-                        </Tooltip>
-                      ))
-                    }
-                  </Avatar.Group>
-                  <Row>
-                    <Col span={5}>
-                      <Badge.Ribbon text="Player Stats" color='green'>
-                        <Row style={{ padding: 30, border: '1px solid lightblue', borderRadius: '5px', marginTop: 70, backgroundColor: 'white' }}>  
-                          <div>
-                            {tagsData.map<React.ReactNode>((tag) => (
-                              <Tag.CheckableTag
-                                key={tag}
-                                checked={selectedTags.includes(tag)}
-                                onChange={(checked) => handleChange(tag, checked)}
-                                style={{ marginTop: 10, marginBottom: 10 }}
-                              >
-                              {tag}
-                              </Tag.CheckableTag>
-                            ))}
-                          </div>
-                          <div style={{ marginTop: 30 }}>
-                            <Select
-                              showSearch
-                              style={{ width: '100%' }}
-                              placeholder="Search to Player"
-                              optionFilterProp="label"
-                              filterSort={(optionA, optionB) =>
-                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                              }
-                              options={teamPlayers.map((player) => ({
-                                value: player.id,
-                                label: player.name,
-                              }))}
-                              onChange={(value) => handlePlayerSelect(value)}
-                            />
-                            <PlayerCard player={selectedPlayerInfo} />
-                          </div>
-                        </Row>
-                      </Badge.Ribbon>
-                    </Col>
-                    <Col span={19} style={{ paddingLeft: 30, paddingTop: 80 }}>
-                      <PlayerStats propsData={filteredPlayerGameStats} statType={""} keysToDisplay={["shootoutGoals", "powerPlayGoals", "blockedShots", "giveaways", "plusMinus", "goals", "faceoffsWon", "penaltiesInMinutes", "powerPlayAssists", "shots", "powerPlayPoints", "assists", "faceoffs", "penalties", "faceoffsLost", "shifts", "takeaways", "hits", "shotsMissedNet"]}/>
-                    </Col>
-                  </Row>
-                  <Row style={{ marginTop: 100 }}>
-                    <Divider>Game Odds</Divider>
-                    {
-                      selectedMatch ? (
-                        <Row>
-                          <Col span={5}>
-                            <Badge.Ribbon text="Game Odds" color='green'>
-                              <Card title="" style={{ padding: 10 }}>
-                                <Select
-                                  showSearch
-                                  style={{ width: '100%' }}
-                                  placeholder="Search to Match"
-                                  optionFilterProp="label"
-                                  filterSort={(optionA, optionB) =>
-                                    (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                  }
-                                  options={schedule.map((item, index) => ({
-                                    value: item.id,
-                                    label: item.id,
-                                  }))}
-                                  onChange={(value) => setSelectedMatch(schedule.find((match) => match.id === value))}
-                                />
-                                <MatchCard matchData={selectedMatch} />
-                              </Card>
-                            </Badge.Ribbon>
-                            <Badge.Ribbon text="Upcoming Game" color='green'>
-                              <Card title="" style={{ padding: 10, marginTop: 30 }}>
-                                {
-                                  upComingMatch ? (
-                                    <MatchCard matchData={upComingMatch} />
-                                  ) : (<h2 style={{ color: 'red', textAlign: 'center' }}>The season has ended.</h2>)
+                    </Avatar.Group>
+                    <Row>
+                      <Col span={5}>
+                        <Badge.Ribbon text="Player Stats" color='green'>
+                          <Row style={{ padding: 30, border: '1px solid lightblue', borderRadius: '5px', marginTop: 70, backgroundColor: 'white' }}>  
+                            <div>
+                              {tagsData.map<React.ReactNode>((tag) => (
+                                <Tag.CheckableTag
+                                  key={tag}
+                                  checked={selectedTags.includes(tag)}
+                                  onChange={(checked) => handleChange(tag, checked)}
+                                  style={{ marginTop: 10, marginBottom: 10 }}
+                                >
+                                {tag}
+                                </Tag.CheckableTag>
+                              ))}
+                            </div>
+                            <div style={{ marginTop: 30 }}>
+                              <Select
+                                showSearch
+                                style={{ width: '100%' }}
+                                placeholder="Search to Player"
+                                optionFilterProp="label"
+                                filterSort={(optionA, optionB) =>
+                                  (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                                 }
-                              </Card>
-                            </Badge.Ribbon>
-                          </Col>
-                          <Col span={19} style={{ paddingLeft: 30 }}>
-                            <Table
-                              columns={teamOddColumns3}
-                              dataSource={teamOddData}
-                              bordered
-                              size="middle"
-                              scroll={{ x: 'calc(700px + 50%)', y: 240 }}
-                            />
-                          </Col>
-                        </Row>
-                      ) : (<h2 style={{ color: 'red', textAlign: 'center' }}>There are no odds available for this date.</h2>)
-                    }
-                  </Row>
-                </div>
-              </Col> 
-            </Row>
-          </div>
-        </>   
+                                options={teamPlayers.map((player) => ({
+                                  value: player.id,
+                                  label: player.name,
+                                }))}
+                                onChange={(value) => handlePlayerSelect(value)}
+                              />
+                              <PlayerCard player={selectedPlayerInfo} />
+                            </div>
+                          </Row>
+                        </Badge.Ribbon>
+                      </Col>
+                      <Col span={19} style={{ paddingLeft: 30, paddingTop: 80 }}>
+                        <PlayerStats propsData={filteredPlayerGameStats} statType={""} keysToDisplay={["shootoutGoals", "powerPlayGoals", "blockedShots", "giveaways", "plusMinus", "goals", "faceoffsWon", "penaltiesInMinutes", "powerPlayAssists", "shots", "powerPlayPoints", "assists", "faceoffs", "penalties", "faceoffsLost", "shifts", "takeaways", "hits", "shotsMissedNet"]}/>
+                      </Col>
+                    </Row>
+                    <Row style={{ marginTop: 100 }}>
+                      <Divider>Game Odds</Divider>
+                      {
+                        selectedMatch ? (
+                          <Row>
+                            <Col span={5}>
+                              <Badge.Ribbon text="Game Odds" color='green'>
+                                <Card title="" style={{ padding: 10 }}>
+                                  <Select
+                                    showSearch
+                                    style={{ width: '100%' }}
+                                    placeholder="Search to Match"
+                                    optionFilterProp="label"
+                                    filterSort={(optionA, optionB) =>
+                                      (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
+                                    }
+                                    options={schedule.map((item, index) => ({
+                                      value: item.id,
+                                      label: item.id,
+                                    }))}
+                                    onChange={(value) => setSelectedMatch(schedule.find((match) => match.id === value))}
+                                  />
+                                  <MatchCard matchData={selectedMatch} />
+                                </Card>
+                              </Badge.Ribbon>
+                              <Badge.Ribbon text="Upcoming Game" color='green'>
+                                <Card title="" style={{ padding: 10, marginTop: 30 }}>
+                                  {
+                                    upComingMatch ? (
+                                      <MatchCard matchData={upComingMatch} />
+                                    ) : (<h2 style={{ color: 'red', textAlign: 'center' }}>The season has ended.</h2>)
+                                  }
+                                </Card>
+                              </Badge.Ribbon>
+                            </Col>
+                            <Col span={19} style={{ paddingLeft: 30 }}>
+                              <Table
+                                columns={teamOddColumns3}
+                                dataSource={teamOddData}
+                                bordered
+                                size="middle"
+                                scroll={{ x: 'calc(700px + 50%)', y: 240 }}
+                              />
+                            </Col>
+                          </Row>
+                        ) : (<h2 style={{ color: 'red', textAlign: 'center' }}>There are no odds available for this date.</h2>)
+                      }
+                    </Row>
+                  </div>
+                </Col> 
+              </Row>
+            </div>
+          </>   
+        )
       }     
       <SideBar />
       <ToastContainer autoClose={5000} />
